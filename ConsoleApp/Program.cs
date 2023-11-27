@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace test
+namespace dbi_projekt_2023
 {
     class Program
     {
