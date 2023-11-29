@@ -65,5 +65,7 @@ namespace dbi_projekt_2023
             Console.WriteLine(Environment.NewLine + text);
             Console.ForegroundColor = color;
         }
+
+        
     }
 }
