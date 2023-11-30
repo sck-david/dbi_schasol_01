@@ -77,7 +77,7 @@ namespace ConsoleApp
             })
             .Generate(50)
             .ToList();
-            Players.AddRange(players);
+            await Players.AddRangeAsync(players);
 
             await SaveChangesAsync();
 
@@ -118,7 +118,7 @@ namespace ConsoleApp
             })
             .Generate(10)
             .ToList();
-            Clubs.AddRange(clubs);
+            await Clubs.AddRangeAsync(clubs);
 
             await SaveChangesAsync();
         }

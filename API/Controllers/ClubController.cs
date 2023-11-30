@@ -22,10 +22,12 @@ namespace API.Controllers
             _context = context;
         }
 
+        [Route("getC")]
         [HttpGet]
         public IEnumerable<Club> GetClubs()
         {
-            var result = _context.Clubs;
+            var result = _context.Clubs.Include(x =>
+            x.Players);
             return result;
         }
 

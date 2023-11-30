@@ -14,7 +14,6 @@ namespace dbi_projekt_2023.ConsoleApp.Domain.Entities
             ClubName = clubName;
             BillingAddress = billingAddress;
             this.currentLeagueId = currentLeagueId;
-            Players = new List<Player>();
         }
 
         public Club() { }
@@ -22,6 +21,6 @@ namespace dbi_projekt_2023.ConsoleApp.Domain.Entities
         public string? ClubName { get; set; }
         public Address BillingAddress { get; set; }
         public int currentLeagueId { get; set; }
-        public List<Player>? Players { get; set; }
+        public List<Player>? Players { get; set; } = new();
     }
 }

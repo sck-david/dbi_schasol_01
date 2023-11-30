@@ -28,7 +28,7 @@
      };
   },
   created() {
-     axios.get('http://localhost:5000/api/clubs')
+     axios.get('http://localhost:5053/api/getC')
        .then(response => {
          this.clubs = response.data;
          this.selectedClubId = this.clubs[0].Id;

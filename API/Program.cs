@@ -28,13 +28,6 @@ var dbContextOptions = new DbContextOptionsBuilder<FDBContext>()
                 ;
 
 
-using var db = new FDBContext(dbContextOptions);
-db.Database.EnsureDeleted();
-db.Database.EnsureCreated();
-
-//await db.SeedAsync();
-await db.SeedAsync();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,6 +35,21 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        using (var db = scope.ServiceProvider.GetService<FDBContext>())
+        {
+            if (db is null)
+            {
+                throw new Exception("No DB!");
+            }
+            // New DB!!!
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+            await db.SeedAsync();
+        }
+    }
 }
 
 app.UseHttpsRedirection();
