@@ -118,7 +118,7 @@ List<Diff> diffDelete = new();
 for (int i = min; i < max; i += steps)
 {
     fDBContext.deleteDB();
-    diffCreate.Add(new Diff(i, service.CreateAndInsertPostgresTimer(i), service.CreateAndInsertMongoTimer(false, i)));
+    diffCreate.Add(new Diff(i, service.CreateAndInsertPostgresTimer(0), service.CreateAndInsertMongoTimer(false, i)));
     diffRead.Add(new Diff(i, service.ReadAllClubs(), service.ReadMongoAllMethodes()));
     diffUpdate.Add(new Diff(i, service.UpdatePostgresTimer(), service.UpdateMongoTimer()));
     diffDelete.Add(new Diff(i, service.DeletePostgresTimer(), service.DeleteMongoTimer()));

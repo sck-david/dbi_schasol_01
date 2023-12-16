@@ -163,13 +163,15 @@ namespace X
                 Stopwatch timer = new();
                 timer.Start();
 
-                var personenAggregate = fDBContext.Clubs
-                .Include(X=> X.Players)
-                .ToList()
-                .Max(x => x.Players.Count);
+            var personenAggregate = fDBContext.Clubs
+            .Include(X => X.Players)
+            .ToList();
 
-                timer.Stop();
-                return (timer.ElapsedMilliseconds, personenAggregate);
+
+                int maxLeagueId = personenAggregate.Any() ? personenAggregate.Max(x => x.currentLeagueId) : 0;
+
+            timer.Stop();
+                return (timer.ElapsedMilliseconds, maxLeagueId);
             }
 
             public List<Player> GetPlayersPerClub(int id)
