@@ -95,6 +95,12 @@ namespace dbi_projekt_2023
             Db = db;
         }
 
+        public void DeleteDb()
+        {
+            Db.DropCollection("players");
+            Db.DropCollection("clubs");
+        }
+
         /// <summary>
         /// Löscht die Datenbank und befüllt sie mit Musterdaten.
         /// </summary>

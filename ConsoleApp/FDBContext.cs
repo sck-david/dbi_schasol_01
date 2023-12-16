@@ -34,8 +34,11 @@ namespace ConsoleApp
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }
-        public async Task SeedAsync()
+        public void Seed()
         {
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
+
             Randomizer.Seed = new Random(944);
             var faker = new Faker("de");
 
@@ -47,7 +50,6 @@ namespace ConsoleApp
             };
 
 
-            int counter = 1;
             var players = new Faker<Player>("de").CustomInstantiator(f =>
             {
                 var addresses = new Faker<Address>("de").CustomInstantiator(f =>
@@ -77,11 +79,11 @@ namespace ConsoleApp
             })
             .Generate(50)
             .ToList();
-            await Players.AddRangeAsync(players);
+            Players.AddRange(players);
 
-            await SaveChangesAsync();
+            SaveChanges();
 
-            counter = 1;
+
             var clubs = new Faker<Club>("de").CustomInstantiator(f =>
             {
                 var addresses = new Faker<Address>("de").CustomInstantiator(f =>
@@ -118,9 +120,9 @@ namespace ConsoleApp
             })
             .Generate(10)
             .ToList();
-            await Clubs.AddRangeAsync(clubs);
+            Clubs.AddRangeAsync(clubs);
 
-            await SaveChangesAsync();
+            SaveChanges();
         }
 
     }
