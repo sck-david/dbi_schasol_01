@@ -56,7 +56,7 @@ using static X.Services;
 FDBContext fDBContext = new FDBContext(new DbContextOptionsBuilder<FDBContext>()
 .UseSqlite(@$"DataSource=fussball.db")
                 .EnableSensitiveDataLogging()
-                .LogTo(Console.WriteLine, LogLevel.Information)
+                //.LogTo(Console.WriteLine, LogLevel.Information)
                 .Options
                 );
 
@@ -70,12 +70,12 @@ Services service = new Services(fDBContext, FDBMongoContext);
 
 Console.WriteLine("Benchmark Test:");
 
-int[] anzarray = { 100, 1000, 100000 };
+int[] anzarray = { 10, 100, 1000 };
 foreach (int anz in anzarray)
 {
     Console.WriteLine($"{anz}: ");
     ConsoleTable mongo = new("", "SQL", "Mongo");
-    mongo.AddRow("CREATE", service.CreateAndInsertPostgresTimer() + "ms", service.CreateAndInsertMongoTimer(false, anz) + "ms");
+    mongo.AddRow("CREATE", service.CreateAndInsertPostgresTimer(anz) + "ms", service.CreateAndInsertMongoTimer(false, anz) + "ms");
     mongo.AddRow("READ", service.ReadAllClubs() + "ms", service.ReadMongoAllMethodes() + "ms");
     mongo.AddRow("UPDATE", service.UpdatePostgresTimer() + "ms", service.UpdateMongoTimer() + "ms");
     mongo.AddRow("DELETE", service.DeletePostgresTimer() + "ms", service.DeleteMongoTimer() + "ms");
@@ -83,7 +83,7 @@ foreach (int anz in anzarray)
 }
 
 Console.WriteLine("Vergleich ohne und mit Aggregation");
-service.CreateAndInsertPostgresTimer();
+service.CreateAndInsertPostgresTimer(1000);
 service.CreateAndInsertMongoTimer(false, 1000);
 ConsoleTable agg = new("", "SQL", "Mongo");
 agg.AddRow("ohne", service.ReadClubsNoFilter().Item1 + "ms", service.ReadMongoClubsNoFilter().Item1 + "ms");
@@ -116,8 +116,9 @@ List<Diff> diffDelete = new();
 //List<long> postgresResults = postgresTasks.Select(task => task.Result).ToList();
 
 for (int i = min; i < max; i += steps)
-{ 
-    diffCreate.Add(new Diff(i, service.CreateAndInsertPostgresTimer(), service.CreateAndInsertMongoTimer(false, i)));
+{
+    fDBContext.deleteDB();
+    diffCreate.Add(new Diff(i, service.CreateAndInsertPostgresTimer(i), service.CreateAndInsertMongoTimer(false, i)));
     diffRead.Add(new Diff(i, service.ReadAllClubs(), service.ReadMongoAllMethodes()));
     diffUpdate.Add(new Diff(i, service.UpdatePostgresTimer(), service.UpdateMongoTimer()));
     diffDelete.Add(new Diff(i, service.DeletePostgresTimer(), service.DeleteMongoTimer()));

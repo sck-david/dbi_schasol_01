@@ -14,7 +14,7 @@ namespace dbi_projekt_2023
             var fdb = fbDatabase.FromConnectionString("mongodb://localhost:27017", logging: true);
             try
             {
-                fdb.Seed();
+                fdb.Seed(10);
             }
             catch (TimeoutException)
             {

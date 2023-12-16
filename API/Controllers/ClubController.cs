@@ -145,7 +145,87 @@ namespace API.Controllers
 
 
 
+        [HttpPost("addPlayer")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult AddPlayer([FromBody] PlayerDTO playerDTO)
+        {
+            try
+            {
+                Player player = new Player
+                {
+                    firstname = playerDTO.Firstname,
+                    lastname = playerDTO.Lastname,
+                    gebDat = playerDTO.gebDat
+                };
 
+                _context.Players.Add(player);
+                _context.SaveChanges();
+
+                return CreatedAtAction(nameof(GetPlayerByIdAsync), new { id = player.Id }, player);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding player");
+                return BadRequest();
+            }
+        }
+
+        [HttpPut("updatePlayer/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult UpdatePlayer(int id, [FromBody] PlayerDTO playerDTO)
+        {
+            try
+            {
+                Player existingPlayer = _context.Players.FirstOrDefault(p => p.Id == id);
+
+                if (existingPlayer == null)
+                {
+                    return NotFound();
+                }
+
+                existingPlayer.firstname = playerDTO.Firstname;
+                existingPlayer.lastname = playerDTO.Lastname;
+                existingPlayer.gebDat = playerDTO.gebDat;
+
+                _context.SaveChanges();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating player");
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("deletePlayer/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult DeletePlayer(int id)
+        {
+            try
+            {
+                Player player = _context.Players.FirstOrDefault(p => p.Id == id);
+
+                if (player == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Players.Remove(player);
+                _context.SaveChanges();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting player");
+                return NotFound();
+            }
+        }
 
 
     }

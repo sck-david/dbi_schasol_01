@@ -7,7 +7,7 @@
        </option>
      </select>
  
-     <PlayerList :selectedClub="selectedClub" />
+     <PlayerList :selectedClub="selectedClub" @playerDeleted="handlePlayerDeleted" />
   </div>
  </template>
  
@@ -23,7 +23,7 @@
      return {
        clubs: [],
        selectedClubId: 0,
-       selectedClub: { Id: 0, clubName: '' }
+       selectedClub: { Id: 0, clubName: '', players: [] },
      };
   },
   async created() {
@@ -49,6 +49,19 @@
      selectedClubId(newValue) {
        this.selectedClub = this.clubs.find(club => club.id === newValue);
      }
-  }
+  },
+  methods: {
+    handlePlayerDeleted(playerId) {
+      // Remove the deleted player from the selectedClub.players array
+      this.selectedClub.players = this.selectedClub.players.filter(player => player.id !== playerId);
+    },
+    handlePlayerEdit(player) {
+      // Set the editingPlayer to the selected player
+      this.editingPlayer = player;
+      // Implement logic to open a modal or navigate to an edit page
+      // You can pass the editingPlayer to the edit page/modal
+      console.log('Edit player:', player);
+    },
+  },
  }
  </script>

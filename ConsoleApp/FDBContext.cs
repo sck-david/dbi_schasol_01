@@ -34,7 +34,13 @@ namespace ConsoleApp
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }
-        public void Seed()
+
+        public async void deleteDB()
+        {
+            await Database.EnsureDeletedAsync();
+            await Database.EnsureCreatedAsync();
+        }
+        public void Seed(int anz)
         {
             Database.EnsureDeleted();
             Database.EnsureCreated();
@@ -77,7 +83,7 @@ namespace ConsoleApp
                 );
 
             })
-            .Generate(50)
+            .Generate(anz*14)
             .ToList();
             Players.AddRange(players);
 
@@ -118,7 +124,7 @@ namespace ConsoleApp
 
                 return c;
             })
-            .Generate(10)
+            .Generate(anz)
             .ToList();
             Clubs.AddRangeAsync(clubs);
 

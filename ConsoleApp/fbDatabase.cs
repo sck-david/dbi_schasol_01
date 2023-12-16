@@ -104,7 +104,7 @@ namespace dbi_projekt_2023
         /// <summary>
         /// Löscht die Datenbank und befüllt sie mit Musterdaten.
         /// </summary>
-        public void Seed()
+        public void Seed(int anz)
         {
             Db.DropCollection("players");
             Db.DropCollection("clubs");
@@ -147,7 +147,7 @@ namespace dbi_projekt_2023
                 ) ;
 
             })
-            .Generate(50)
+            .Generate(anz*14)
             .ToList();
             Players.InsertMany(players);
 
@@ -186,7 +186,7 @@ namespace dbi_projekt_2023
                 
                 return c;
             })
-            .Generate(10)
+            .Generate(anz)
             .ToList();
             Clubs.InsertMany(clubs);
 

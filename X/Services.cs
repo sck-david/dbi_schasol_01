@@ -50,14 +50,13 @@ namespace X
             }
 
             //Postgres Create
-            public long CreateAndInsertPostgresTimer()
+            public long CreateAndInsertPostgresTimer(int anz)
             {
-                fDBContext.Database.EnsureDeleted();
-                fDBContext.Database.EnsureCreated();
+                fDBContext.deleteDB();
                 Stopwatch timer = new();
                 timer.Start();
 
-                fDBContext.Seed();
+                fDBContext.Seed(anz);
 
                 timer.Stop();
                 return timer.ElapsedMilliseconds;
@@ -229,8 +228,8 @@ namespace X
             {
                 Stopwatch timer = new();
                 timer.Start();
-            fDBContext.Players.Add(player);
-            fDBContext.SaveChanges();
+                fDBContext.Players.Add(player);
+                fDBContext.SaveChanges();
                 timer.Stop();
                 return timer.ElapsedMilliseconds;
             }
@@ -262,9 +261,9 @@ namespace X
                 timer.Start();
 
                 if (withIndex)
-                FDBMongoContext.Seed();
+                FDBMongoContext.Seed(anz);
                 else
-                FDBMongoContext.Seed();
+                FDBMongoContext.Seed(anz);
 
                 timer.Stop();
                 return timer.ElapsedMilliseconds;

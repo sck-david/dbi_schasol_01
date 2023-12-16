@@ -57,7 +57,7 @@ namespace ConsoleApp
                 Stopwatch timer = new();
                 timer.Start();
 
-                fDBContext.Seed();
+                fDBContext.Seed(anz);
 
                 timer.Stop();
                 return timer.ElapsedMilliseconds;
@@ -262,9 +262,9 @@ namespace ConsoleApp
                 timer.Start();
 
                 if (withIndex)
-                FDBMongoContext.Seed();
+                FDBMongoContext.Seed(anz);
                 else
-                FDBMongoContext.Seed();
+                FDBMongoContext.Seed(anz);
 
                 timer.Stop();
                 return timer.ElapsedMilliseconds;

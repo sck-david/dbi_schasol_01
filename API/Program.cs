@@ -13,6 +13,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddDbContext<FDBContext>(c => {
     c
     .UseSqlite(@$"DataSource=fussball.db")
@@ -47,10 +57,12 @@ if (app.Environment.IsDevelopment())
             // New DB!!!
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
-            await db.SeedAsync();
+            db.Seed(10);
         }
     }
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
