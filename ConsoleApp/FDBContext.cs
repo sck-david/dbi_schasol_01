@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bogus;
 using ConsoleApp.Domain.Entities;
+using System.Runtime.Intrinsics.X86;
 
 namespace ConsoleApp
 {
@@ -18,7 +19,9 @@ namespace ConsoleApp
 
         public FDBContext() : this(
             new DbContextOptionsBuilder<FDBContext>()
-            .UseSqlite(@$"DataSource=fussball.db")
+            .UseNpgsql(
+                "Server = schasol.postgres.database.azure.com; Database=postgres;Port=5432;User Id = raphi; Password=schasol123!; Ssl Mode = Require;"
+                )
             .Options)
         {
         }
@@ -35,10 +38,11 @@ namespace ConsoleApp
         {
         }
 
-        public async void deleteDB()
+        public async Task<int> deleteDB()
         {
             await Database.EnsureDeletedAsync();
             await Database.EnsureCreatedAsync();
+            return 1;
         }
         public void Seed(int anz)
         {

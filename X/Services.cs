@@ -52,7 +52,6 @@ namespace X
             //Postgres Create
             public long CreateAndInsertPostgresTimer(int anz)
             {
-                fDBContext.deleteDB();
                 Stopwatch timer = new();
                 timer.Start();
 

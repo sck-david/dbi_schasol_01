@@ -54,11 +54,8 @@ using static X.Services;
 //}
 
 FDBContext fDBContext = new FDBContext(new DbContextOptionsBuilder<FDBContext>()
-.UseSqlite(@$"DataSource=fussball.db")
-                .EnableSensitiveDataLogging()
-                //.LogTo(Console.WriteLine, LogLevel.Information)
-                .Options
-                );
+.UseNpgsql("Server = schasol.postgres.database.azure.com; Database=fussball;Port=5432;User Id = raphi; Password=schasol123!; Ssl Mode = Require;").EnableSensitiveDataLogging()
+            .Options);
 
 fDBContext.Database.EnsureDeleted();
 fDBContext.Database.EnsureCreated();
@@ -114,11 +111,10 @@ List<Diff> diffDelete = new();
 //await Task.WhenAll(postgresTasks);
 
 //List<long> postgresResults = postgresTasks.Select(task => task.Result).ToList();
-
+await fDBContext.deleteDB();
 for (int i = min; i < max; i += steps)
 {
-    fDBContext.deleteDB();
-    diffCreate.Add(new Diff(i, service.CreateAndInsertPostgresTimer(0), service.CreateAndInsertMongoTimer(false, i)));
+    diffCreate.Add(new Diff(i, service.CreateAndInsertPostgresTimer(i), service.CreateAndInsertMongoTimer(false, i)));
     diffRead.Add(new Diff(i, service.ReadAllClubs(), service.ReadMongoAllMethodes()));
     diffUpdate.Add(new Diff(i, service.UpdatePostgresTimer(), service.UpdateMongoTimer()));
     diffDelete.Add(new Diff(i, service.DeletePostgresTimer(), service.DeleteMongoTimer()));
