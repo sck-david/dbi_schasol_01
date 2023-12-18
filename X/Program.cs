@@ -60,7 +60,7 @@ FDBContext fDBContext = new FDBContext(new DbContextOptionsBuilder<FDBContext>()
 fDBContext.Database.EnsureDeleted();
 fDBContext.Database.EnsureCreated();
 
-fbDatabase FDBMongoContext = fbDatabase.FromConnectionString("mongodb://localhost:27017", logging: false);
+fbDatabase FDBMongoContext = fbDatabase.FromConnectionString("mongodb+srv://krapfinice:<raphi>@schasol.usteeyz.mongodb.net/?retryWrites=true&w=majority", logging: false);
 FDBMongoContext.DeleteDb();
 
 Services service = new Services(fDBContext, FDBMongoContext);
